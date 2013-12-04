@@ -15,7 +15,7 @@ Sample jQuery Code
 
 The following example is for a JSON-formatted response written with jQuery v1.9.1:
  
-```jQuery 
+```javascript
   <html>
     <title>USDA ERS API web service call using jSON</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" type="text/javascript"></script>
