@@ -1,6 +1,6 @@
-Sample jQuery Code
+# jQuery Example #
 
-The following example is for a JSON-formatted response written with jQuery v1.9.1:
+The purpose of this document is to provide example code for interacting with [ARMS](http://ers.usda.gov/data-products/arms-farm-financial-and-crop-production-practices.aspx) data via its REST API. 
 
 ```javascript
   <html>
