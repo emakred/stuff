@@ -93,4 +93,5 @@ In [8]: for survey in ap.data['dataTable']:
    ...:         print survey
    ...:
 {u'survey_abb': u'CROP', u'surveyDesc': u'Crop production practices'}
-{u'survey_abb': u'FINANCE', u'surveyDesc': u'Farm f
+{u'survey_abb': u'FINANCE', u'surveyDesc': u'Farm finances'}
+
