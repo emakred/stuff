@@ -35,7 +35,6 @@ The following example is for a JSON-formatted response written with jQuery v1.9.
               strResult += "<tr><td>" + Report.report_num + "</td><td> " + Report.report_header + "</td></tr>";
             });
             strResult += "</table>";  
-            alert(strResult);     
 
             $("#divResultARMS").html(strResult);         
           }
