@@ -1,7 +1,7 @@
-Sample Python Code
-------------------
+Python Example
+--------------
 
-The following example is for a JSON-formatted response written with Python:
+Below is a simple Python example of implementing the API to the [ARMS](http://ers.usda.gov/data-products/arms-farm-financial-and-crop-production-practices.aspx) data.
 
 __pyusda.py__
 ```python
@@ -42,12 +42,15 @@ $ python pyusda.py 'data/Arms/Surveys' $API_KEY > output.json
     pprint.pprint(ap.data)
 ```
 
+Script and instructions to interact with the ARMS API
+
+
 __Run APIObject from the commandline__
 ```
 $ python pyusda.py http://api.data.gov/USDA/ERS/data/Arms/Surveys put_your_api_key_here
 ```
 
-The first arg is the api_url. The second is your API_KEY.
+The first arg is the api_url. The second is your API_KEY (obtained from [http://api.data.gov/](http://api.data.gov)).
 ```
 $ python pyusda.py $API_URL $API_KEY
 ```
