@@ -1,10 +1,10 @@
-# Ruby Example for USDA's Economic Research Service API's #
+# Ruby Example #
 
-The purpose of this document is to provide example code for interacting with [USDA'S Econmic Research Service data](http://www.ers.usda.gov/developer.aspx#.Up-EHmSActQ) via its REST API. [Learn more about the API here](http://www.ers.usda.gov/developer/data-apis.aspx#.Up-FNWSActQ).
+The purpose of this document is to provide example code for interacting with the [ARMS](http://ers.usda.gov/data-products/arms-farm-financial-and-crop-production-practices.aspx) via its REST API. 
 
 ## A Basic Interface to the API ##
 
-Below is a simple class implementing an API to the ERS data.
+Below is a simple class implementing an API to the ARMS data.  Note:  ERS APIs require a key which can be obtained at [http://api.data.gov](http://api.data.gov). Please replace the ENTER_API_KEY_HERE text below with your registered key.
 
 ```ruby
 module USDA
@@ -15,7 +15,7 @@ module USDA
   class API
     attr_accessor :base_uri
 
-    API_KEY = { api_key: "DEMO_KEY" }
+    API_KEY = { api_key: "ENTER_API_KEY_HERE" }
 
     def initialize(base_uri = "http://api.data.gov/USDA/ERS/data/")
       @base_uri = base_uri
@@ -37,7 +37,7 @@ module USDA
   ...
 ```
 
-You can use this class to build an API object to interact with the USDA API. For example, you could get a list of reports for a given survey like this:
+You can use this class to build an API object to interact with the ARMS API. For example, you could get a list of reports for a given survey like this:
 
 ```ruby
 api = USDA::API.new
@@ -80,7 +80,7 @@ would return
 
 ## Getting Specific Data ##
 
-To get specific data from the API, you need to build requests using the [REST paths described in the documentation](http://api.ers.usda.gov/). The following `ARMS` class provides some pre-built methods to access these paths.
+To get specific data from the API, you need to build requests using the [REST paths](http://api.ers.usda.gov/) described in the documentation. The following `ARMS` class provides some pre-built methods to access these paths.
 
 ```ruby
 ...
@@ -113,9 +113,9 @@ To get specific data from the API, you need to build requests using the [REST pa
   ...
 ```
 
-You can use these class methods to make calls to specific routes using the the optional and required paramters for each request.
+You can use these class methods to make calls to specific routes using the optional and required paramters for each request.
 
-For example to get a list of surveys available from the ARMS, use the `.surveys` method:
+For example to get a list of surveys available from ARMS, use the `.surveys` method:
 
 ` $ puts USDA::ARMS.surveys` to return
 
@@ -178,13 +178,13 @@ The `.subjects` and `.series` methods work similarly, returning a list of subjec
 
 ### The Main Event ###
 
-The main use case of the ERS API is used to query the Crop or Finance survey database using the endpoints `Arms/Crops` and `Arms/Finance` respectively. These endpoints accept `GET` requests with a few required and optional parameters.
+The main use case of the ARMS API is used to query the Crop or Finance survey database using the endpoints `Arms/Crops` and `Arms/Finance` respectively. These endpoints accept `GET` requests with a few required and optional parameters.
 
 The required parameters are:
 -  report: An integer value specifying a report number
 -  series1: A string value specifying a valid series code
 
-The `USDA::ARMS.crops` method shown above crafts requests to the Crops survey endpoint using the required parameters, along with any opyional paramters you pass it. For example, to receive the data points from the Crops survey in Report #1 (Pesticide Use) for all Farms (`series1 = "FARM"`) in the great state of Minnesota, you would use the method like this:
+The `USDA::ARMS.crops` method shown above crafts requests to the Crops survey endpoint using the required parameters, along with any optional paramters you pass it. For example, to receive the data points from the Crops survey in Report #1 (Pesticide Use) for all Farms (`series1 = "FARM"`) in the great state of Minnesota, you would use the method like this:
 
 `USDA::ARMS.crops(1, "FARM", { fipsStateCode: "27" })`
 
@@ -282,7 +282,7 @@ Let's say you wanted to get time series data for a specific data point. You coul
   #...
 ```
 
-This method will take a set of results, filter them for a sepcifc `topic_seq`, `subject_num`, and `element2_nam`, and return an array of datapoints corresponding to a specific year. 
+This method will take a set of results, filter them for a specific `topic_seq`, `subject_num`, and `element2_nam`, and return an array of datapoints corresponding to a specific year. 
 
 Again using the above results for the Pesticide use in Minnesota, to get the time series data for total acreage (`element2_name = 'TOTAL`) with pesticides (`topic_seq = 1`) planted with corn (`subject_num = 1`), we could use the method like this:
 
