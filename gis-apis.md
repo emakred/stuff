@@ -9,14 +9,7 @@ A summary of the map services, and where they are used:
 |Map Service | Description, type of content |	Where Used |
 | ---------- | ---------------------------- | ---------- |
 |`background_cache`   `background` | Generic landmass/waterbody used for map backgrounds | All ERS Atlases except the Food Access Research Atlas |
-|`fa_access`<br>`fa_assistance`<br>`fa_health`<br>`fa_insecurity`<br>`fa_local`<br>`fa_prices_taxes`<br>`fa_restaurants`<br>`fa_socioeconomic`<br>`fa_stores` | Access and Proximity to Grocery Stores | `Food Assistance' 
-Health and Physical Activity
-Food Insecurity
-Local Foods
-Food Prices and Taxes
-Restaurant Availability and Expenditures
-Socioeconomic Characteristics
-Store Availability	The Food Environment Atlas
+|`fa_access`<br>`fa_assistance`<br>`fa_health`<br>`fa_insecurity`<br>`fa_local`<br>`fa_prices_taxes`<br>`fa_restaurants` <br>`fa_socioeconomic`<br>`fa_stores` | Access and Proximity to Grocery Stores<br>Food Assistance<br>Health and Physical Activity<br>Food Insecurity<br>Local Foods<br>Food Prices and Taxes<br>Restaurant Availability and Expenditures<br>Socioeconomic Characteristics<br>Store Availability | The Food Environment Atlas |
 
 
 Foodaccess 
