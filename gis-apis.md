@@ -25,7 +25,7 @@ To use the ERS Map Services in a desktop application such as ArcMap or ArcGIS On
 * Follow the instructions [here](http://resources.arcgis.com/en/help/main/10.1/index.html#/Adding_ArcGIS_for_Server_map_services/00sp00000019000000/) to add the maps to your document.  Use ‘gis.ers.usda.gov’ as the server specification.
 
 ##Developer API instructions
-The services can be accessed through ArcGIS Server REST API.  JSON and SOAP interfaces are also available.  See the [detailed documentation](http://gis.ers.usda.gov/arcgis/sdk/rest/index.html?catalog.html) including general usage instructions, and service properties and methods. 
+The services can be accessed through ArcGIS Server REST API.  JSON and SOAP interfaces are also available.  See the [detailed documentation](http://gis.ers.usda.gov/arcgis/sdk/rest/index.html?catalog.html) including general usage instructions, service properties and methods. 
 
 
 
