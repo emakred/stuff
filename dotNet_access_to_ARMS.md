@@ -1,6 +1,6 @@
 This is the page mark-up.
 
-```asp.net
+```html
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DataRequest.aspx.cs" Inherits="ers.RESTexample.DataRequest" %>
 
 <!DOCTYPE html>
