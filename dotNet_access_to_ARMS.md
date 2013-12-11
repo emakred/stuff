@@ -22,7 +22,7 @@ This is the page mark-up.
 
 This is the code-behind, using C#.
 
-```asp.net
+```c#
 using System;
 using System.Collections.Generic;
 using System.Data;
