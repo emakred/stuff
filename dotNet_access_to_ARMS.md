@@ -20,7 +20,7 @@ This is the page mark-up.
 ```
 
 
-This is the code-behind, using C#.
+This is the code-behind, using C#.  Replace PUT_YOUR_API_KEY_HERE with your own key (from [api.data.gov](http://api.data.gov))
 
 ```c#
 using System;
@@ -42,7 +42,7 @@ namespace ers.RESTexample
         protected void Page_Load(object sender, EventArgs e)
         {
             string _rootArmsUrl = "http://api.data.gov/USDA/ERS/data/Arms/";
-            string _myKey = "j0rkdUenY2MoflDoGdhRz5n9df8ABxOqSegggTOw";
+            string _myKey = "PUT_YOUR_API_KEY_HERE";
 
             SurveyCollection _surveys = this.RequestSurveys(_rootArmsUrl + "Surveys?api_key=" + _myKey);
             string _surveyCode = _surveys.data.FirstOrDefault(s => s.surveyDesc == "Farm finances").survey_abb;
