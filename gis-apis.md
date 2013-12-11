@@ -14,11 +14,7 @@ A summary of the map services, and where they are used:
 |`fsn_acre`<br>`fsn_ci`<br>`fsn_crp`<br>`fsn_crssprg`<br>`fsn_dcp`<br>`fsn_milc`<br>`fsn_mlb`<br>`fsn_sure` | Average Crop Revenue Election Program<br>Crop Insurance Program<br>Conservation Reserve Program<br>Cross Program Comparisons<br>Direct and Countercyclical Program<br>Milk Income Loss Contract<br>Marketing Assistance Loan Program<br>Supplemental Revenue Assistance Program | The Farm Program Atlas |
 |`ra_cntyclass`<br>`ra_filter`<br>`ra_income`<br>`ra_jobs`<br>`ra_people`<br>`ra_veterans`<br>`ra_query` | County classifications<br>Used to mask metro/non metro counties<br>Income<br>Jobs<br>People<br><br>All Rural Atlas map variables | Atlas of Rural and Small Town America |
 |`snap_benefits`<br>`snap_participation_poverty`<br>`snap_participation` | SNAP Benefits<br>SNAP Participation per Person in Poverty<br>SNAP Participation | Supplemental Nutrition Assistance Program (SNAP) Data System |
-
-Reference2
-referenceWM
-State and county boundaries and labels
-Web Mercator version	All ERS Map Atlases
+|`Reference2`<br>`referenceWM` | State and county boundaries and labels<br>Web Mercator version	| All ERS Map Atlases |
 
 Desktop User instructions
 To use the ERS Map Services in a desktop application such as ArcMap or ArcGIS Online, use the service description and REST directory to determine which services and maps you would like to use, and follow the instructions here to add the maps to your document:  
