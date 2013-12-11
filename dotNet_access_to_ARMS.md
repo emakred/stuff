@@ -1,6 +1,6 @@
 This is the page mark-up.
 
-```ruby
+```asp
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DataRequest.aspx.cs" Inherits="ers.RESTexample.DataRequest" %>
 
 <!DOCTYPE html>
