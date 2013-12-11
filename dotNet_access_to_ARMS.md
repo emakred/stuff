@@ -1,6 +1,6 @@
 This is the page mark-up.
 
-```asp
+```asp.net
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DataRequest.aspx.cs" Inherits="ers.RESTexample.DataRequest" %>
 
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ This is the page mark-up.
 
 This is the code-behind, using C#.
 
-```ruby
+```asp.net
 using System;
 using System.Collections.Generic;
 using System.Data;
