@@ -13,14 +13,7 @@ A summary of the map services, and where they are used:
 |`Foodaccess` |	Food Access measures used in the Food Access Research Atlas | The Food Access Research Atlas |
 |`fsn_acre`<br>`fsn_ci`<br>`fsn_crp`<br>`fsn_crssprg`<br>`fsn_dcp`<br>`fsn_milc`<br>`fsn_mlb`<br>`fsn_sure` | Average Crop Revenue Election Program<br>Crop Insurance Program<br>Conservation Reserve Program<br>Cross Program Comparisons<br>Direct and Countercyclical Program<br>Milk Income Loss Contract<br>Marketing Assistance Loan Program<br>Supplemental Revenue Assistance Program | The Farm Program Atlas |
 |`ra_cntyclass`<br>`ra_filter`<br>`ra_income`<br>`ra_jobs`<br>`ra_people`<br>`ra_veterans`<br>`ra_query` | County classifications<br>Used to mask metro/non metro counties<br>Income<br>Jobs<br>People<br><br>All Rural Atlas map variables | Atlas of Rural and Small Town America |
-
-snap_benefits
-snap_participation_poverty
-snap_participation
-SNAP Benefits
-SNAP Participation per Person in Poverty
-
-SNAP Participation	Supplemental Nutrition Assistance Program (SNAP) Data System
+|`snap_benefits`<br>`snap_participation_poverty`<br>`snap_participation` | SNAP Benefits<br>SNAP Participation per Person in Poverty<br>SNAP Participation | Supplemental Nutrition Assistance Program (SNAP) Data System |
 
 Reference2
 referenceWM
