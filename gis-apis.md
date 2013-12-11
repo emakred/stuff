@@ -20,8 +20,9 @@ A summary of the map services, and where they are used:
 |`Reference2`<br>`referenceWM` | State and county boundaries and labels<br>Web Mercator version	| All ERS Map Atlases |
 
 ##Desktop User instructions
-To use the ERS Map Services in a desktop application such as ArcMap or ArcGIS Online, use the [service description and REST directory](http://gis.ers.usda.gov/arcgis/rest) to determine which services and maps you would like to use, and follow the instructions here to add the maps to your document:  
-http://resources.arcgis.com/en/help/main/10.1/index.html#/Adding_ArcGIS_for_Server_map_services/00sp00000019000000/ Use ‘gis.ers.usda.gov’ as the server specification.
+To use the ERS Map Services in a desktop application such as ArcMap or ArcGIS Online:
+* Browse the [service description and REST directory](http://gis.ers.usda.gov/arcgis/rest) to determine which services and maps you would like to use
+* Follow the instructions [here](http://resources.arcgis.com/en/help/main/10.1/index.html#/Adding_ArcGIS_for_Server_map_services/00sp00000019000000/) to add the maps to your document.  Use ‘gis.ers.usda.gov’ as the server specification.
 
 ##Developer API instructions
 The services can be accessed through ArcGIS Server REST API.  JSON and SOAP interfaces are also available.   Detailed documentation including general usage instructions, and service properties and methods is available here: 
