@@ -1,0 +1,33 @@
+library(RMySQL)
+
+username = 'crowdpacdata'
+passwd = 'crowdpacdata2014'
+dbname = 'cfdb'
+port = 5841
+host = 'cp-data-analysis3.cbtto5axwp1k.us-east-1.rds.amazonaws.com'
+
+con <- dbConnect(MySQL(), user=username, password=passwd, dbname=dbname, port=port, host=host)
+
+
+# create table CA (bonica_id varchar(24), Name varchar(255), IncumChall varchar(2), District int, seat varchar(40), Party int, cfscore double);
+
+
+temp<-read.csv('~/workspace/crowdpac/states/2014/CA/explore.csv',stringsAsFactors=FALSE, header=TRUE)
+
+
+for (i in 208:nrow(temp)) {
+	row <- temp[i,]
+	query1 <- paste("INSERT INTO cfdb.CA VALUES ('")
+	query2 <- paste(row[1],"', '",sep='')
+	name <- gsub("'","",row[2])
+	query3 <- paste(name,"', '",sep='')
+	query4 <- paste(row[3],"', ",sep='')	
+	if (is.na(row[4])) {district<-'NULL'} else {district<-row[4]}
+	query5 <- paste(district,", '",sep='')	
+	query6 <- paste(row[5],"', ",sep='')	
+	query7 <- paste(row[6],", ",sep='')	
+	if (is.na(row[7])) {score<-'NULL'} else {score<-row[7]}
+	query8 <- paste(score,");",sep='')	
+	fullquery <- paste(query1, query2, query3, query4, query5, query6, query7, query8, sep='')
+	dbGetQuery(con,fullquery)
+}

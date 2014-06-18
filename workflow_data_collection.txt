@@ -1,0 +1,124 @@
+##CONSTRUCTING RECIPIENT MASTER FILE
+##
+##output:/workspace/contributions/data/cand_1979_2014.rda
+R CMD BATCH /workspace/contributions/mysql/add_cands.R
+
+###############################################################################
+##PRELIM
+###############################################################################
+
+##UPDATE NAME FREQUENCY STATS FOR NEW RECORDS IN DB
+R CMD BATCH /workspace/contributions/mysql/update_name_freq.R
+
+###############################################################################
+##FEC ELECTRONIC
+###############################################################################
+
+##DOWNLOAD AND PARSE FEC ELECTRONIC FILES
+R CMD BATCH /workspace/contributions/readfec/automatic_read_electronic.R
+
+##UPLOAD FEC ELECTRONIC FILES TO MYSQL
+R CMD BATCH /workspace/contributions/readfec/automatic2.R
+
+
+###############################################################################
+##ADD PAPER RECORDS
+###############################################################################
+
+##DOWNLOADING 2012
+rm indiv12.zip
+wget ftp://ftp.fec.gov/FEC/2012/indiv12.zip
+unzip indiv12.zip
+mv /workspace/datasets/fec/individuals/itcont12.txt  /workspace/datasets/fec/individuals/itcont12_old.txt
+mv itcont.txt /workspace/datasets/fec/individuals/itcont12.txt
+
+##DOWNLOADING 2014
+rm indiv14.zip
+wget ftp://ftp.fec.gov/FEC/2014/indiv14.zip
+unzip indiv14.zip
+mv /workspace/datasets/fec/individuals/itcont14.txt  /workspace/datasets/fec/individuals/itcont14_old.txt
+mv itcont.txt /workspace/datasets/fec/individuals/itcont14.txt
+
+##PARSING DATA FROM FEC FILES
+R CMD BATCH /workspace/contributions/src/data_prep/individ_contributions.r
+
+##SECOND LEVEL OF PARSING
+R CMD BATCH /workspace/contributions/mysql/add_indivs_fec.R
+
+##UPLOAD TO MYSQL
+R CMD BATCH /workspace/contributions/readfec/add_paper_records.R
+
+
+###############################################################################
+##ADD 527 FROM IRS
+###############################################################################
+
+
+
+###############################################################################
+##ADD STATE RECORDS
+###############################################################################
+
+##********************
+##TEXAS
+##********************
+R CMD BATCH /workspace/crowdpac/cf_import/TX/tx_scraper.R
+R CMD BATCH /workspace/crowdpac/cf_import/TX/tx_state_parse_electronic.R
+R CMD BATCH /workspace/crowdpac/cf_import/TX/tx_state.R
+
+
+##********************
+##ILLINOIS
+##********************
+
+
+##********************
+##NYC
+##********************
+##DOWNLOAD UPDATED FILES FROM HERE
+##wget http://www.nyccfb.info/DataLibrary/CFB-Data.zip
+
+
+
+
+###############################################################################
+##GEOCODING
+###############################################################################
+
+##OVERLAYS GEOCOORDINATES ONTO CONGRESSIONAL DISTRICTS
+R CMD BATCH /workspace/contributions/api/gis_congdistrict.R
+
+##OVERLAYS GEOCOORDINATES ONTO CENSUS TRACTS
+R CMD BATCH /workspace/contributions/api/gis_census_tracts.R
+
+
+###############################################################################
+##COMPUTE DATA ON CONGRESSIONAL DISTRICTS AND FUNDRAISING
+###############################################################################
+
+##COMPUTES DISTRICT SPECIFIC DATA SUMMARIES BASED ON DONORS IN CONGRESSIONAL
+##DISTRICTS
+##
+##output:/workspace/contributions/data/cand_all_1979_2014.rda
+R CMD BATCH /workspace/contributions/analysis/cong_districts.R
+
+
+###############################################################################
+##COLLECT DATA ON CANDIDATE BIOS
+###############################################################################
+
+##COLLECTS BIO RECORDS
+##
+##output:/workspace/cand_cont_db/cbios_00_14.rda
+R CMD BATCH /workspace/cand_cont_db/get_cand_bios.R
+
+##PARSES DEGREE DATA AND MATCHES BIO RECORDS WITH CANDIDATE DB
+##
+##output:/workspace/cand_cont_db/cbios_00_14_with_degrees_matched.rda
+R CMD BATCH /workspace/cand_cont_db/get_cand_bios2.R
+
+
+###############################################################################
+##ENTITY RESOLUTION/DONOR DISAMBIGUTAION 
+###############################################################################
+R CMD BATCH /workspace/contributions/api/rerun_api.R

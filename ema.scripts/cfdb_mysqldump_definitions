@@ -1,0 +1,322 @@
+$ sed -n -e '/CREATE TABLE.*newconts/,/CREATE TABLE/p' bk_cfdb_20140330.sql > bk_20140330_newconts.sql
+$ more bk_20140330_newconts.sql (copy table definition over, without keys)
+mysql> (paste in table definition)
+$ sed -n -e '/LOCK TABLES.*newconts/,/DROP TABLE/p' bk_20140330_newconts.sql > bk_20140330_newconts_data.sql
+$ mysql -h cp-data-analysis3.cbtto5axwp1k.us-east-1.rds.amazonaws.com -P 5841 -u crowdpacdata -p cfdb < bk_20140330_newconts_data.sql
+
+
+CREATE TABLE `all_match` (
+  `id` int(11) DEFAULT NULL,
+  `bonica_id` bigint(20) DEFAULT NULL,
+  `amount` double DEFAULT NULL,
+  `fullname` varchar(1000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `aman_states` (
+  `id` bigint(20) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+CREATE TABLE `cand_cont_db` (
+  `ICPSR2` varchar(128) CHARACTER SET latin1 NOT NULL,
+  `Name` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
+  `Party` varchar(256) CHARACTER SET latin1 DEFAULT NULL,
+  `State` varchar(4) CHARACTER SET latin1 DEFAULT NULL,
+  `seat` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  `bonica_rid` varchar(128) CHARACTER SET latin1 DEFAULT NULL,
+  `ContribID` bigint(20) DEFAULT NULL,
+  `gender` varchar(2) CHARACTER SET latin1 DEFAULT NULL,
+  `total_receipts` double DEFAULT NULL,
+  `election` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin CHECKSUM=1 ROW_FORMAT=FIXED;
+
+CREATE TABLE `candidates` (
+  `rowid` bigint(20) DEFAULT NULL,
+  `election` bigint(20) DEFAULT NULL,
+  `ICPSR` text,
+  `ICPSR2` text,
+  `Name` text,
+  `State` text,
+  `District` text,
+  `Incum_Chall` text,
+  `Party` text,
+  `oc1` double DEFAULT NULL,
+  `oc2` double DEFAULT NULL,
+  `cs_1` double DEFAULT NULL,
+  `cs_2` double DEFAULT NULL,
+  `seat` text,
+  `ran_primary` bigint(20) DEFAULT NULL,
+  `ran_general` bigint(20) DEFAULT NULL,
+  `candStatus` text,
+  `fecyear` bigint(20) DEFAULT NULL,
+  `total_disbursements` bigint(20) DEFAULT NULL,
+  `total_receipts` bigint(20) DEFAULT NULL,
+  `total_indiv_contrib` bigint(20) DEFAULT NULL,
+  `total_pac_contribs` bigint(20) DEFAULT NULL,
+  `total_pc_contribs` bigint(20) DEFAULT NULL,
+  `contribs_from_candidate` bigint(20) DEFAULT NULL,
+  `total_ind_contribs` double DEFAULT NULL,
+  `unitemized` double DEFAULT NULL,
+  `s_elec_stat` text,
+  `p_elec_stat` text,
+  `r_elec_stat` text,
+  `gen_elec_stat` text,
+  `gen_elect_pct` text,
+  `d_vote_share` text,
+  `r_vote_share` text,
+  `winner` text,
+  `cd_pres_vs_2000` double DEFAULT NULL,
+  `cd_pres_vs_2004` double DEFAULT NULL,
+  `cd_pres_vs_2008` double DEFAULT NULL,
+  `cq_forecast` bigint(20) DEFAULT NULL,
+  `prev_dvs` double DEFAULT NULL,
+  `prev_rvs` double DEFAULT NULL,
+  `demCandidate` text,
+  `repCandidate` text,
+  `d_status` text,
+  `r_status` text,
+  `ada` double DEFAULT NULL,
+  `turbo_ada` double DEFAULT NULL,
+  `turbo_ada_mean` double DEFAULT NULL,
+  `turbo_ccus` double DEFAULT NULL,
+  `turbo_ccus_mean` double DEFAULT NULL,
+  `mean_aclu` double DEFAULT NULL,
+  `mean_nea` double DEFAULT NULL,
+  `mean_naral` double DEFAULT NULL,
+  `mean_lccr` double DEFAULT NULL,
+  `mean_naacp` double DEFAULT NULL,
+  `mean_aauw` double DEFAULT NULL,
+  `mean_asc` double DEFAULT NULL,
+  `mean_cfa` double DEFAULT NULL,
+  `Cand_ID` text,
+  `FEC_ID` text,
+  `NID` text,
+  `unq_candids` text,
+  `unq_fecids` text,
+  `before_switch_ICPSR` bigint(20) DEFAULT NULL,
+  `after_switch_ICPSR` bigint(20) DEFAULT NULL,
+  `op_ICPSR` text,
+  `op_total_receipts` bigint(20) DEFAULT NULL,
+  `op_total_pac_contribs` bigint(20) DEFAULT NULL,
+  `op_unitemized` double DEFAULT NULL,
+  `cand_or_committee` text,
+  `crp_District` text,
+  `old_District` text,
+  `Incumb` bigint(20) DEFAULT NULL,
+  `Open_Seat` text,
+  `Chall` text,
+  `enter` bigint(20) DEFAULT NULL,
+  `exit` bigint(20) DEFAULT NULL,
+  `held_office` bigint(20) DEFAULT NULL,
+  `gender` text,
+  `religion` text,
+  `race` text,
+  `profession` text,
+  `profession2` text,
+  `profession3` text,
+  `milService` text,
+  `Incum_Chall2` text,
+  `office` text,
+  `committee_seniority` bigint(20) DEFAULT NULL,
+  `Committee_Code_1` bigint(20) DEFAULT NULL,
+  `Committee_Code_2` bigint(20) DEFAULT NULL,
+  `Committee_Code_3` bigint(20) DEFAULT NULL,
+  `Committee_Code_4` bigint(20) DEFAULT NULL,
+  `Committee_Code_5` bigint(20) DEFAULT NULL,
+  `Committee_Code_6` bigint(20) DEFAULT NULL,
+  `rank_1` bigint(20) DEFAULT NULL,
+  `rank_2` bigint(20) DEFAULT NULL,
+  `rank_3` bigint(20) DEFAULT NULL,
+  `rank_4` bigint(20) DEFAULT NULL,
+  `rank_5` bigint(20) DEFAULT NULL,
+  `rank_6` bigint(20) DEFAULT NULL,
+  `rank_within_party` bigint(20) DEFAULT NULL,
+  `status_at_end` bigint(20) DEFAULT NULL,
+  `committee_continuity` bigint(20) DEFAULT NULL,
+  `period_of_service` bigint(20) DEFAULT NULL,
+  `committee_codes` bigint(20) DEFAULT NULL,
+  `won_election` bigint(20) DEFAULT NULL,
+  `lost_election` bigint(20) DEFAULT NULL,
+  `elected_to_another_office` bigint(20) DEFAULT NULL,
+  `appointed_to_another_office` bigint(20) DEFAULT NULL,
+  `retiring` bigint(20) DEFAULT NULL,
+  `unsucessful_contest_for_another_office` bigint(20) DEFAULT NULL,
+  `left_office` bigint(20) DEFAULT NULL,
+  `committee_maj_chair` bigint(20) DEFAULT NULL,
+  `committee_min_chair` bigint(20) DEFAULT NULL,
+  `committee_chair` bigint(20) DEFAULT NULL,
+  `party_leadership_maj` bigint(20) DEFAULT NULL,
+  `party_leadership_min` bigint(20) DEFAULT NULL,
+  `party_leadership` bigint(20) DEFAULT NULL,
+  `comdes` text,
+  `comtype` text,
+  `comparty` text,
+  `igcat` text,
+  `affiliate` text,
+  `ultorg` text,
+  `indcode` text,
+  `Catcode` text,
+  `Catname` text,
+  `Catorder` text,
+  `Industry` text,
+  `Sector_Long` text
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `genders` (
+  `word` varchar(100) DEFAULT NULL,
+  `gender_string` varchar(20) DEFAULT NULL,
+  `mas_count` int(11) DEFAULT NULL,
+  `fem_count` int(11) DEFAULT NULL,
+  `gender` varchar(1) DEFAULT NULL,
+  KEY `word_index` (`word`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `loose_match` (
+  `c` bigint(21) NOT NULL DEFAULT '0',
+  `amount` double DEFAULT NULL,
+  `fullname` varchar(1000) DEFAULT NULL,
+  `id` int(11) DEFAULT NULL,
+  `bonica_id` bigint(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+CREATE TABLE `newconts` (
+  `cycle` int(11) NOT NULL,
+  `transaction_id` varchar(50) NOT NULL DEFAULT '',
+  `transaction_id_orig` varchar(50) NOT NULL,
+  `transaction_type` varchar(4) NOT NULL,
+  `amount` double NOT NULL,
+  `agg_amount` double DEFAULT NULL,
+  `date` varchar(12) NOT NULL,
+  `contributor_name` varchar(128) NOT NULL,
+  `contributor_lname` varchar(64) NOT NULL,
+  `contributor_fname` varchar(64) NOT NULL,
+  `contributor_mname` varchar(32) NOT NULL,
+  `contributor_ffname` varchar(64) NOT NULL,
+  `contributor_suffix` varchar(10) NOT NULL,
+  `contributor_title` varchar(10) NOT NULL,
+  `contributor_name_orig` varchar(10) NOT NULL,
+  `contributor_ext_id` varchar(20) NOT NULL,
+  `contributor_type` enum('C','I') DEFAULT NULL,
+  `contributor_occupation` text NOT NULL,
+  `contributor_employer` text NOT NULL,
+  `contributor_gender` enum('M','F','U','N') NOT NULL,
+  `contributor_address` varchar(128) NOT NULL,
+  `contributor_city` varchar(60) NOT NULL,
+  `contributor_state` varchar(2) NOT NULL,
+  `contributor_zipcode` int(10) NOT NULL,
+  `contributor_category` varchar(12) NOT NULL,
+  `contributor_category_order` varchar(8) NOT NULL,
+  `organization_name` text NOT NULL,
+  `parent_organization_name` text NOT NULL,
+  `recipient_name` varchar(120) NOT NULL,
+  `recipient_ext_id` varchar(30) NOT NULL,
+  `recipient_ext_id_orig` varchar(30) NOT NULL,
+  `recipient_party` varchar(5) NOT NULL,
+  `recipient_type` enum('COMM','CAND') NOT NULL,
+  `recipient_state` varchar(2) NOT NULL,
+  `recipient_category` varchar(10) NOT NULL,
+  `recipient_category_order` varchar(5) DEFAULT NULL,
+  `recipient_icpsr` varchar(15) NOT NULL,
+  `recipient_candid` varchar(10) NOT NULL,
+  `recipient_nid` varchar(10) NOT NULL,
+  `election_type` enum('P','G','R','S') DEFAULT NULL,
+  `district` varchar(6) NOT NULL,
+  `seat` varchar(40) NOT NULL,
+  `seat_status` varchar(2) NOT NULL,
+  `seat_result` varchar(5) NOT NULL,
+  `bonica_id` bigint(20) DEFAULT NULL,
+  `bonica_id_old` bigint(20) DEFAULT NULL,
+  `bonica_id2` bigint(20) DEFAULT NULL,
+  `bonica_id3` bigint(20) DEFAULT NULL,
+  `bonica_id_fix` bigint(20) DEFAULT NULL,
+  `in_state` tinyint(1) NOT NULL DEFAULT '0',
+  `in_district` tinyint(1) NOT NULL DEFAULT '0',
+  `contributor_zipcode_imputed` int(11) DEFAULT NULL,
+  `contributor_district` varchar(8) DEFAULT NULL,
+  `contributor_district_10` varchar(4) DEFAULT NULL,
+  `occ_standardized` varchar(40) DEFAULT NULL,
+  `latitude` float(9,6) DEFAULT NULL,
+  `longitude` float(9,6) DEFAULT NULL,
+  `gis_confidence` float NOT NULL,
+  `rerun_indicator` int(11) NOT NULL DEFAULT '0',
+  `age` int(11) NOT NULL,
+  `birthyear` int(11) NOT NULL,
+  `other_contributor_address` varchar(128) NOT NULL,
+  `other_contributor_city` varchar(60) NOT NULL,
+  `other_contributor_state` varchar(2) NOT NULL,
+  `contributor_cfscore` double DEFAULT NULL,
+  `candidate_cfscore` double DEFAULT NULL,
+  `lname_frequency` double DEFAULT NULL,
+  `fname_frequency` double DEFAULT NULL,
+  `contributor_category_imputed` varchar(64) DEFAULT NULL,
+  `bonica_id_gender` bigint(20) DEFAULT NULL,
+  `bonica_rid` varchar(128) DEFAULT NULL,
+  `microfilm` varchar(128) DEFAULT NULL,
+  `fecrn` varchar(128) DEFAULT NULL,
+  `employer_sic_code` varchar(128) DEFAULT NULL,
+  `is_corp` varchar(128) DEFAULT NULL,
+  `memo` varchar(128) DEFAULT NULL,
+  `memo2` varchar(128) DEFAULT NULL,
+  `efec_org_orig` varchar(128) DEFAULT NULL,
+  `efec_comid_orig` varchar(128) DEFAULT NULL,
+  `efec_form_type` varchar(32) DEFAULT NULL,
+  `contributor_district_90` varchar(4) DEFAULT NULL,
+  `censustract` varchar(64) NOT NULL,
+  `ct_population` int(11) NOT NULL,
+  `ct_pct_white` double NOT NULL,
+  `ct_pct_black` double NOT NULL,
+  `ct_pct_asian` double NOT NULL,
+  `ct_pct_hispanic` double NOT NULL,
+  `ct_median_hh_income` double NOT NULL,
+  `ct_median_housing_value` double NOT NULL,
+  `ct_mean_hh_income` double NOT NULL,
+  `ct_mean_housing_value` double NOT NULL,
+  `censusblock` varchar(64) NOT NULL,
+  `county` varchar(64) NOT NULL,
+  `sldist_lower_00` varchar(32) NOT NULL,
+  `sldist_upper_00` varchar(32) NOT NULL,
+  `sldist_lower_10` varchar(32) NOT NULL,
+  `sldist_upper_10` varchar(32) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+
+newconts keys:
+  PRIMARY KEY (`transaction_id`),                                                                     2 days, 2 hours
+  KEY `bonica_id` (`bonica_id`),                                                                      8.5 hours, 4:50pm
+  KEY `bonica_id2` (`bonica_id2`),                                                                    8.75 hours
+  KEY `bonica_id_old` (`bonica_id_old`),                                                              9.5 hours
+  KEY `cycle` (`cycle`),                                                                              9 hours
+  KEY `cname` (`contributor_name`),                                                                   7.5 hours
+  KEY `clname` (`contributor_lname`),                                                                 7 hours
+  KEY `cfname` (`contributor_fname`),                                                                 7.75 hours
+  KEY `caddress` (`contributor_address`),                                                             6 hours
+  KEY `recipient_ext_id` (`recipient_ext_id`),                                                        6 hours
+  KEY `contributor_ext_id` (`contributor_ext_id`),                                                    5.5 hours
+  KEY `contributor_ext_id_2` (`contributor_ext_id`),                                                  5.25 hours
+  KEY `recipient_ext_id_orig` (`recipient_ext_id_orig`),                                              5.75 hours
+  KEY `recipient_icpsr` (`recipient_icpsr`),                                                          5.75 hours  
+  KEY `recipient_candid` (`recipient_candid`),                                                        [didn't note]
+  KEY `bonica_rid` (`bonica_rid`),                                                                    6.75 hours
+  KEY `contributor_state` (`contributor_state`),                                                      7.75 hours
+  KEY `recipient_name` (`recipient_name`),                                                            8 hours
+  KEY `ctype` (`contributor_type`),                                                                   8.5 hours
+  KEY `bonica_id3` (`bonica_id3`),                                                                    7.5 hours
+  KEY `bonica_id_fix` (`bonica_id_fix`),                                                              7.5 hours
+  FULLTEXT KEY `contributor_name` (`contributor_name`),                                               [didn't note]
+  FULLTEXT KEY `contributor_fname` (`contributor_fname`),                                             5+ hours
+  FULLTEXT KEY `contributor_address` (`contributor_address`,`contributor_city`,`contributor_state`),  2 hours
+  FULLTEXT KEY `contributor_occupation` (`contributor_occupation`,`contributor_employer`),            1.75 hours
+  FULLTEXT KEY `organization_name` (`organization_name`,`parent_organization_name`),                  1.5 hours
+  FULLTEXT KEY `occ_standardized` (`occ_standardized`)                                                1 hour
+
+CREATE TABLE `unknowns` (
+  `id` int(11) DEFAULT NULL,
+  `company` varchar(1000) DEFAULT NULL,
+  `first` varchar(1000) DEFAULT NULL,
+  `last` varchar(1000) DEFAULT NULL,
+  `fullname` varchar(1000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

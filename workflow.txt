@@ -1,0 +1,188 @@
+#!/bin/bash
+
+cd /archive/tmp/scrape_thomas/
+virtualenv virt
+source virt/bin/activate
+pip install pyyaml pytz lxml scrapelib
+
+##SCRAPE BILL TEXT FROM THOMAS
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2003 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2004 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2005 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2006 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2007 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2008 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2009 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2010 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2011 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2012 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2013 --store=mods,xml --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=BILLS --year=2014 --store=mods,xml --fast
+
+##SCRAPING DATA ON BILLS, LEGISLATIVE PROCEEDINGS, SPONSORS AND COSPONSORS
+python /archive/tmp/scrape_thomas/run bills --year=2003 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2004 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2005 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2006 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2007 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2008 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2009 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2010 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2011 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2012 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2013 --format=xml --fast
+python /archive/tmp/scrape_thomas/run bills --year=2014 --format=xml --fast
+
+##SCRAPING AMENDMENTS
+python /archive/tmp/scrape_thomas/run  amendments --congress=107 --format=xml --fast
+python /archive/tmp/scrape_thomas/run  amendments --congress=108 --format=xml --fast
+python /archive/tmp/scrape_thomas/run  amendments --congress=109 --format=xml --fast
+python /archive/tmp/scrape_thomas/run  amendments --congress=110 --format=xml --fast
+python /archive/tmp/scrape_thomas/run  amendments --congress=111 --format=xml --fast
+python /archive/tmp/scrape_thomas/run  amendments --congress=112 --format=xml --fast
+python /archive/tmp/scrape_thomas/run  amendments --congress=113 --format=xml --fast
+
+##TODO: ADD SCRIPTS TO SCRAPE COMMITTEE HEARINGS
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2003 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2004 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2005 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2006 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2007 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2008 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2009 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2010 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2011 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2012 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2013 --store=mods,text --fast
+python /archive/tmp/scrape_thomas/run fdsys --collections=CHRG --year=2014 --store=mods,text --fast
+
+exit
+
+
+###############################################################################
+##SCRAPING CONGRESSIONAL RECORD--INCLUDES FLOOR SPEECHES, LEGISLATIVE DEBATES
+###############################################################################
+
+##SYNCING WITH WORKSTATION
+##rsync -avz --progress  -e ssh bonica@workstation:/archive/tmp/scrape_thomas/ /archive/tmp/scrape_thomas
+
+cd /archive/tmp/cr/
+python /workspace/crowdpac/CongressionalRecord-master/scraper.py backto 01/01/2013
+
+##PARSING CONGRESSIONAL RECORD TO XML
+cd /workspace/crowdpac/
+
+##ENCODING RAW TEXT TO XML
+python CongressionalRecord-master/parser.py '2013/12/01'
+python CongressionalRecord-master/parser4.py '/archive/tmp/cr/xml/'
+
+##MOVING OUTPUT FILE TO WORKSPACE
+mv /archive/tmp/cr3.csv /workspace/crowdpac/data/
+
+
+###############################################################################
+##SCRAPING TWITTER
+###############################################################################
+R CMD BATCH /workspace/crowdpac/twitter_feeds.R
+
+###############################################################################
+##COMPILING AND COMBINE DATA ON POLITICAL TEXT, LEGISLATORS AND BILLS
+###############################################################################
+
+##CONSTRUCT LEGISLATOR DB
+R CMD BATCH --no-save  /workspace/crowdpac/get_leg_data.R
+
+##GET ISSUE RAITINGS
+R CMD BATCH --no-save /workspace/crowdpac/get_ig_ratings.R
+
+##PARSE INFORMATION ON BILLS ABOUT SPONSORS AND COSPONSORS INTO DATABASE
+R CMD BATCH --no-save /workspace/crowdpac/collect_bills.R
+
+##MERGE DATA FROM BILL TEXT WITH FLOOR SPEACHES
+R CMD BATCH --no-save /workspace/crowdpac/merge_bills_and_floor_speeches.R
+
+
+###############################################################################
+##TOPIC MODEL: PARTIALLY LABELLED LDA
+###############################################################################
+
+##PREP THE CORPUS
+python /workspace/crowdpac/prep_scala.py
+
+##
+R CMD BATCH --no-save /workspace/crowdpac/prep_nlps_db.R
+R CMD BATCH --no-save /workspace/crowdpac/collect_candidate_text.R
+
+
+## RUN STANFORD TOPIC MODELING TOOLKIT: PLDA
+cd /workspace/crowdpac/
+rm /workspace/crowdpac/data/abills.csv.term*
+rm /workspace/crowdpac/data/abills_training.csv.term*
+rm /workspace/crowdpac/data/abills_inference.csv.term*
+rm -rf /archive/tmp/all_pldaout/*
+java -Xmx32g -jar tmt-0.4.0.jar run_plda.scala
+
+## PLDA INFERENCE
+rm /workspace/crowdpac/data/abills_inference.csv.term*
+java -Xmx32g -jar tmt-0.4.0.jar run_plda_inference.scala
+
+rm /workspace/crowdpac/data/candtext_inference.csv.term*
+java -Xmx32g -jar tmt-0.4.0.jar run_plda_inference_cands.scala
+
+
+//java -Xmx32g -jar tmt-0.4.0.jar run_plda_inference_1.scala
+//java -Xmx32g -jar tmt-0.4.0.jar run_plda_inference_2.scala
+//java -Xmx32g -jar tmt-0.4.0.jar run_plda_inference_3.scala
+//java -Xmx32g -jar tmt-0.4.0.jar run_plda_inference_4.scala
+
+
+cp /archive/tmp/all_pldaout/document-topic-distriubtions.csv /workspace/crowdpac/data/all_pldaout/document-topic-distributions.csv
+cp /archive/tmp/all_pldaout/abills_inference* /workspace/crowdpac/data/all_pldaout/
+cp -rf /archive/tmp/all_pldaout/00100 /workspace/crowdpac/data/all_pldaout/
+cp -rf /archive/tmp/all_pldaout/01000 /workspace/crowdpac/data/all_pldaout/
+cp -rf /archive/tmp/all_pldaout/02500 /workspace/crowdpac/data/all_pldaout/
+cp -rf /archive/tmp/all_pldaout/05000 /workspace/crowdpac/data/all_pldaout/
+
+##COLLECTING RESULTS FROM
+R CMD BATCH --no-save /workspace/crowdpac/collect_llda_results.R
+
+
+###############################################################################
+## ROLL CALL MODEL: KERNEL WEIGHTED OPTIMAL CLASSIFICATION
+###############################################################################
+
+##UPDATE ROLL CALL DATABASE
+R CMD BATCH --no-save /workspace/rcscale/utils/updateRCs.r
+
+##CONSTRUCTING RC OBJECT
+R CMD BATCH --no-save /workspace/rcscale/create_roll_call_object_crowdpac.R
+
+##MERGE PLDA DATA WITH rcdata R DATA OBJECT
+R CMD BATCH --no-save /workspace/crowdpac/merge_rc_tm.R
+
+##INITIALIZE ISSUE SPECIFIC ROLL CALL MODEL
+R CMD BATCH --no-save /workspace/rcscale/runOC_issue_specific.R
+
+##RUN COMPLETED ISSUE-SPECIFIC ROLL CALL MODEL
+R CMD BATCH --no-save /workspace/rcscale/runOC_issue_specific_complete.R
+
+##WRITING CUTPOINTS TO FILE
+R CMD BATCH --no-save /workspace/crowdpac/get_bills_with_issue_weights.R
+
+
+###############################################################################
+##MODELING CONTRIBUTION RECORDS
+###############################################################################
+
+##CONNECT TO ISSUE-ADVOCACY ORGANIZATIONS
+R CMD BATCH --no-save /workspace/crowdpac/nyt_issue_specific/get_abortion_bids_new.R
+R CMD BATCH --no-save /workspace/crowdpac/nyt_issue_specific/collect_results.R
+
+##PRELIMINARY IMPUTATION
+R CMD BATCH --no-save /workspace/crowdpac/prelim_contribs.R
+
+
+###############################################################################
+##WRITING OUTPUT FILES TO CSV
+###############################################################################
+R CMD BATCH --no-save /workspace/crowdpac/write_to_csv.R

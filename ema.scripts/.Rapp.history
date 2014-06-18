@@ -1,0 +1,121 @@
+cc1 <- read.csv('/scratch1/Dropbox/crowdpac/output/candidate_master_to_import.csv')
+cc1 <- read.csv('~/Users/alice/Desktop/Dropbox/crowdpac/output/candidate_master_to_import.csv')
+cc1 <- read.csv('~/Desktop/Dropbox/crowdpac/output/candidate_master_to_import.csv')
+getdir()
+getwd()
+cc1 <- read.csv('~/Dropbox/Dropbox (Crowdpac Data Sci)/crowdpac/output/candidate_master_to_import.csv')
+cc1 <- read.csv('~/Dropbox (Crowdpac Data Sci)/crowdpac/output/candidate_master_to_import.csv')
+unq.brid <- unique(cc1[,'bonica_rid'])
+unq.brid
+for(y in 1:length(unq.brid)) {#
+  i <- unq.brid[y]#
+  print(which(unq.brid==i))#
+  m <- match(i,cands[,'bonica_rid'])  #
+#
+  if (!is.na(m)) {#
+#
+    icpsr <- cands[m,'ICPSR2']#
+    print(cands[m,c('Name','oc1')])#
+#
+    ################################################################################
+    ##DONORS WHO GAVE TO CANDIDATE i ALSO GAVE TO CANDIDATES x,y,z#
+    ################################################################################
+    k <- match(icpsr,colnames(cm))#
+    use <- which((cm1[,k]) > 0)#
+    cm.i <- cm1[use,]#
+    oo <- colSums(cm.i)#
+    num.donors <- length(use)#
+    num.of.shared.donors <- oo#
+    oo1 <- oo /  log1p(colSums(cm1))#
+    oo1[oo < 3] <- 0#
+    oo <- oo1#
+#
+    if(sum(oo > 0) > 1 ){#
+      similar <- rev(order(oo))[-1]#
+      u.icpsr <- colnames(cm.i)[similar[1:min(sum(oo>0),20)]]#
+      # u.icpsr <- u.icpsr[!(u.icpsr %in% exclude.recips)]#
+      oo <- oo[similar[1:min(sum(oo>0),20)]]#
+      num.of.shared.donors <- num.of.shared.donors[similar[1:min(sum(oo>0),20)]]#
+#
+      m <- match(u.icpsr,cands[,'ICPSR2'])#
+      sim.mat <- cbind(cands[m,c('Name','oc1','bonica_rid')],oo,round(oo/length(use),3))#
+#
+      m <- match(as.character(sim.mat[,'bonica_rid']),as.character(cands[,'bonica_rid']))#
+      recip <- cands[m,c('Name','Party','oc1','State','District')]#
+      cf <- round(rescale.cf(as.numeric(recip[,'oc1'])),1)#
+      recip.info <- recip[,c('Name','State','District')]#
+      shared.donations <- na.omit(cbind(bonica_rid=as.character(i),#
+                                        recip.info,#
+                                        as.character(sim.mat[,'bonica_rid']),#
+                                        num.donors,#
+                                        num.of.shared.donors,#
+                                        pct.of.shared.donors= (num.of.shared.donors/num.donors),#
+                                        recipient_idscore=cf))#
+#
+      colnames(shared.donations) <- c('bonica_rid','name','state','district',#
+                                      'recipient.id',#
+                                      'num.of.donors','num.of.shared.donors','pct.donors.shared',#
+                                      'recipient.idscore')#
+      # print(shared.donations)#
+      shared.donations.all <- rbind(shared.donations.all,shared.donations)#
+    }#
+    ################################################################################
+    ##DONATIONS FROM#
+    ################################################################################
+    donors <- dbGetQuery(con,#
+                         paste("select * from newconts ",#
+                               " where bonica_rid = '",i,"' and bonica_id2 > 0",sep=''))#
+    if (!identical(donors,df)) {#
+      female <- ifelse(donors[,'contributor_gender'] == 'F',5e10,0)#
+      donors[,'bonica_id2'] <- donors[,'bonica_id2'] + female#
+      donors <- donors[(donors[,'transaction_type'] %in%  c('24K','15','15E','24Z',#
+                                                      '11','10','19','24I','15Z',#
+                                                   '24F','24E','24C',' ','NA','')),]#
+      donors <- donors[as.numeric(donors[,'amount']) >0,]#
+#
+      if (length(donors$amount)>0) {#
+        agg.am <- aggregate(donors$amount,by=list(donors$bonica_id2),FUN=sum,na.rm=T)#
+        agg.am <- agg.am[rev(order(agg.am[,2])),]#
+        ind <- NULL#
+        for(j in 1:min(30,nrow(agg.am))){ ## cycle through top 20#
+            pp <- donors[which(donors[,'bonica_id2'] == agg.am[j,1]),]#
+            pp <- pp[rev(order(pp[,'date'])),]#
+            if(pp[1,'contributor_type'] == 'C'){#
+                ln  <- most.common(pp[,'contributor_name'])#
+                fn <- emp <- occ <- ''#
+            }else{#
+                emp  <- most.common(pp[,'contributor_employer'])#
+                occ  <- most.common(pp[,'contributor_occupation'])#
+                ln  <- most.common(pp[,'contributor_lname'])#
+                fn  <- most.common(pp[,'contributor_ffname'])#
+                ##location and date of most recent contribution#
+            }#
+            loc <- unlist(pp[1,c('contributor_city','contributor_state','date','bonica_id2')])#
+            am <- as.numeric(pp[1,'amount'])#
+            ind <- rbind(ind,c(ln,fn,occ,emp,loc,am,round(agg.am[j,2])))#
+        }#
+        if(nrow(ind) == 1){#
+            m  <- match(as.numeric(ind['bonica_id2']),comid)#
+        }else{#
+            m <- match(as.numeric(ind[,'bonica_id2']),comid)#
+        }#
+        cf <- round(as.numeric(contributors[m,'oc1']),2)#
+        cf <- rescale.cf(cf)#
+        donations.from.ind <- cbind(bonica_rid=as.character(i),ind,cf)#
+        # need to remove any records with 'NA' in the donor.idscore (=cf)#
+        donations.from.ind <- donations.from.ind[!is.na(cf),]#
+        donations.from.ind <- donations.from.ind[1:min(10,nrow(donations.from.ind)),]#
+        colnames(donations.from.ind) <- c('bonica_rid','last.name','first.name','occ','emp','city','state',#
+                                          'date.of.most.recent.cont','donor.id',#
+                                          'amount.of.most.recent.cont','total.amount.career',#
+                                          'donor.idscore')#
+        donations.from.ind.all.cands <- rbind(donations.from.ind.all.cands,donations.from.ind)#
+      } # end: if (length(donors$amount)>0)#
+    } # end: if (!identical(donors,df))
+}
+1
+[1]
+script_location <- paste(path_to_Dropbox,'crowdpac/ema.scripts/find_bonica_rid2.R',sep='')source(script_location)
+path_to_Dropbox <- '/Users/Ethan/Dropbox (Crowdpac Data Sci)/'
+script_location <- paste(path_to_Dropbox,'crowdpac/ema.scripts/find_bonica_rid2.R',sep='')source(script_location)
+q()

@@ -1,0 +1,29 @@
+# create function that take two variables and prints to console
+def cheese_and_crackers(cheese_count, boxes_of_crackers):
+	# print stuff
+	print "You have %d cheeses!" % cheese_count
+	# print more stuff
+	print "You have %d boxes of crackers!" % boxes_of_crackers
+	# print more stuff
+	print "Man that's enough for a party!"
+	# print more stuff and an extra blank line
+	print "Get a blanket.\n"
+
+print "We can just give the function numbers directly:"
+# call function with numbers
+cheese_and_crackers(20,30)
+
+print "OR, we can use variables from our script:"
+amount_of_cheese = 10
+amount_of_crackers = 50
+
+# call function with variables
+cheese_and_crackers(amount_of_cheese, amount_of_crackers)
+
+print "We can even do math inside too:"
+# call function with math
+cheese_and_crackers(10+20, 5+6)
+
+print "And we can combine the two, variables and math:"
+# call function with variables and math
+cheese_and_crackers(amount_of_cheese+100, amount_of_crackers + 1000)
